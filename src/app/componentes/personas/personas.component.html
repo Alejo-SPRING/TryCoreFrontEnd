@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <p class="display-3 mt-5"><span class="fa fa-users"></span> Personas</p>
+        </div>
+        <div class="col-12 col-md-6">
+            <img src="assets/imgs/img-personas.svg" class="img-fluid" width="70%">
+        </div>
+    </div>
+    <hr>
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="display-4">Top 3 de visitas</h3>
+        </div>
+        <div class="col-12 col-md-4 bg-d" *ngFor="let personaT of personasTop3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4 bg-dark text-light">
+                        <p class="display-4 ml-4">{{personaT.posicion}}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p>{{personaT.datos.nombre + " " + personaT.datos.apellido}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="card-columns">
+        <div class="card" *ngFor="let persona of personasList">
+            <div class="card-body bg-dark text-light">
+                <h5 class="card-title"><span class="fa fa-user"></span> {{persona.nombre + " " + persona.apellido}}</h5>
+                <p><span class="fa fa-globe-americas"></span> {{persona.planeta.nombre}}</p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-10">
+                        <p><span class="fa fa-eye"></span> {{persona.contador}}</p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <button type="button" title="Detalles" class="btn btn-primary rounded-circle" (click)="open(detalles, persona)"><span class="fa fa-info"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #detalles let-modal>
+            <div class="modal-body">
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">X</button>
+                <h3><span class="fa fa-list"></span> Detalles</h3>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <p><span class="fa fa-clock"></span> Edad: {{personaDetalle.edad}}</p>
+                        </td>
+                        <td>
+                            <p><span class="fa fa-ruler-vertical"></span> Altura: {{personaDetalle.altura}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><span class="fa fa-balance-scale"></span> Peso: {{personaDetalle.peso}}</p>
+                        </td>
+                        <td>
+                            <p><span class="fa fa-venus-mars"></span> Genero: {{personaDetalle.genero}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><span class="fa fa-calendar-alt"></span> Fecha de nacimiento: {{personaDetalle.fechaNacimiento}}</p>
+                        </td>
+                        <td>
+                            <p><span class="fa fa-globe-americas"></span> Planeta: {{personaDetalle.planeta.nombre}}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ng-template>
+    </div>
+</div>
