@@ -1,7 +1,9 @@
+import { MessagesService } from './../../services/messages.service';
 import { Component, OnInit } from '@angular/core';
 import { PlanetasService } from '../../services/planetas.service';
 import swal from 'sweetalert2';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-planetas',
@@ -14,10 +16,18 @@ export class PlanetasComponent implements OnInit {
   public planetaSelec: any;
   public planetasTop3: any[];
   public primeroEnTop: any;
+  public sendFromId: number;
+  public sendToId: number;
+  public message: FormControl;
+  private mdRef: NgbModalRef;
+  public messages: any[] = [];
 
-  constructor(private planetasService : PlanetasService, private modalService: NgbModal) { }
+  constructor(private planetasService : PlanetasService, private modalService: NgbModal, private messageService: MessagesService) { }
 
   ngOnInit(): void {
+    this.message = new FormControl("", [Validators.required, Validators.maxLength(100)]);
+    this.sendToId = 0;
+    this.sendFromId = 0;
     this.planetasService.top3().subscribe(
       response => {
         if(this.planetasTop3 != null) {
@@ -67,12 +77,55 @@ export class PlanetasComponent implements OnInit {
     );
   }
 
+  public sendMessage(): void {
+    let body: any = {
+      message: this.codeBinary(),
+      planetMessageFromId: this.sendFromId,
+      planetMessageToId: this.sendToId
+    };
+    this.messageService.sendMessage(body).subscribe(
+      response => {
+        swal.fire("¡Mensaje enviado!", "" , "success");
+        this.ngOnInit();
+        this.mdRef.close();
+      },
+      error => {
+        swal.fire("¡Error!", "¡Upps ha ocurrido un error intentalo de nuevo por favor!", "error");
+      }
+    );
+  }
+
+  private codeBinary(): string {
+    let messageCode: string = "";
+    for(var i = 0; i < this.message.value.length; i ++) {
+      messageCode += this.message.value.charCodeAt(i).toString(2) + " ";
+    }
+    return messageCode;
+  }
+
+  public selectSendMessageTo(content: any, sendToId: number): void {
+    this.sendToId = sendToId;
+    this.mdRef = this.modalService.open(content, {size:'lg'});
+  }
+
+  public selectSendMessageFrom(sendFromId: number): void {
+    this.sendFromId = sendFromId;
+  }
+
   public open(content, planeta: any) {
     this.planetaSelec = planeta;
     this.planetasService.updateContador(planeta.id).subscribe(
       response => {
-        this.ngOnInit();
-        this.modalService.open(content, {size : "xl"});
+        this.messageService.findAllMessagesSendTo(planeta.id).subscribe(
+          response => {
+            this.messages = response;
+            this.ngOnInit();
+            this.modalService.open(content, {size : "xl"});
+          },
+          error => {
+            swal.fire("¡Upps ha ocurrido un error!", "", "error");
+          }
+        );
       },
       error => {
         console.log(error);

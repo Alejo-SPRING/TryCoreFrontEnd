@@ -1,8 +1,8 @@
+import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { EndPoints } from '../helpers/end-points';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class PlanetasService {
   constructor(private http : HttpClient) { }
 
   public getPlanetas(): Observable<any>{
-    return this.http.get(EndPoints.endPoint + "planetas/all").pipe(
+    return this.http.get(environment.endPoint + "planetas/all").pipe(
       catchError(
         error => {
           return throwError(error);
@@ -22,7 +22,7 @@ export class PlanetasService {
   }
 
   public updateContador(planetaId : number): Observable<any>{
-    return this.http.put(EndPoints.endPoint + "planetas/contador/" + planetaId, null).pipe(
+    return this.http.put(environment.endPoint + "planetas/contador/" + planetaId, null).pipe(
       catchError(
         error => {
           return throwError(error);
@@ -32,7 +32,7 @@ export class PlanetasService {
   }
 
   public top3(): Observable<any>{
-    return this.http.get(EndPoints.endPoint + "planetas/top3").pipe(
+    return this.http.get(environment.endPoint + "planetas/top3").pipe(
       catchError(
         error => {
           return throwError(error);

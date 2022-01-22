@@ -1,105 +1,148 @@
 <div class="container">
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <p class="display-3 mt-5"><small class="fa fa-globe-americas"></small> Planetas</p>
-        </div>
-        <div class="col-12 col-md-6">
-            <img src="assets/imgs/img-planetas.svg" class="img-fluid" width="70%">
-        </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <p class="display-3 mt-5"><small class="fa fa-globe-americas"></small> Planetas</p>
     </div>
-    <hr>
-    <div class="row mb-3">
-        <div class="col-12">
-            <h3 class="display-4">Top 3 de visitas</h3>
-        </div>
-        <div class="col-12 col-md-4 bg-d" *ngFor="let planetaT of planetasTop3">
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row no-gutters">
-                    <div class="col-md-4 bg-info text-light">
-                        <p class="display-4 ml-4">{{planetaT.posicion}}</p>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            {{planetaT.datos.nombre}}
-                        </div>
-                    </div>
-                </div>
+    <div class="col-12 col-md-6">
+      <img src="assets/imgs/img-planetas.svg" class="img-fluid" width="70%">
+    </div>
+  </div>
+  <hr>
+  <div class="row mb-3">
+    <div class="col-12">
+      <h3 class="display-4">Top 3 de visitas</h3>
+    </div>
+    <div class="col-12 col-md-4 bg-d" *ngFor="let planetaT of planetasTop3">
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+          <div class="col-md-4 bg-info text-light">
+            <p class="display-4 ml-4">{{planetaT.posicion}}</p>
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              {{planetaT.datos.nombre}}
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-12">
-            <div class="card-columns">
-                <div class="card" *ngFor="let planeta of planetasList">
-                    <div class="card-body bg-info text-light">
-                        <h5 class="card-title"><span class="fa fa-globe-americas"></span> {{planeta.nombre}}</h5>
-                        <p><span class="fa fa-users"></span> {{planeta.cantidadHabitantes}}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-12 col-md-10">
-                                <p><span class="fa fa-eye text-dark"></span> {{planeta.contador}}</p>
-                            </div>
-                            <div class="col-12 col-md-2">
-                                <button type="button" title="Detalles" class="btn btn-dark rounded-circle" (click)="open(detalles, planeta)"><span class="fa fa-info"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <ng-template #detalles let-modal>
-                    <div class="modal-body">
-                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">X</button>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <h3><span class="fa fa-users"></span> Habitantes</h3>
-                                <table class="table table-stripped table-hover">
-                                    <thead>
-                                        <th>Nombre</th>
-                                        <th>Peso</th>
-                                        <th>Fecha de nacimiento</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let persona of planetaSelec.personas">
-                                            <td>{{persona.nombre}}</td>
-                                            <td>{{persona.peso}}</td>
-                                            <td>{{persona.fechaNacimiento}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <h3><span class="fa fa-list"></span> Detalles</h3>
-                                <table class="table">
-                                    <tr>
-                                        <td>
-                                            <p><span class="fa fa-clock"></span> Periodo de rotación: {{planetaSelec.periodoDeRotacion}}</p>
-                                        </td>
-                                        <td>
-                                            <p><span class="fa fa-ruler-vertical"></span> Diámetro: {{planetaSelec.diametro}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p><span class="fa fa-cloud-sun"></span> Clima: {{planetaSelec.clima}}</p>
-                                        </td>
-                                        <td>
-                                            <p><span class="fa fa-mountain"></span> Terreno: {{planetaSelec.terreno}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p><span class="fa fa-globe-americas"></span> Nombre: {{planetaSelec.nombre}}</p>
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-12">
+      <div class="card-columns">
+        <div class="card" [ngClass]="{'bg-success': sendFromId != 0 && sendFromId == planeta.id}"
+          *ngFor="let planeta of planetasList">
+          <img src="{{planeta.imgUrl}}" class="card-img-top img-fluid" alt="...">
+          <div class="card-body bg-info text-light">
+            <h5 class="card-title"><span class="fa fa-globe-americas"></span> {{planeta.nombre}}</h5>
+            <p><span class="fa fa-users"></span> {{planeta.cantidadHabitantes}}</p>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-12 col-md-5">
+                <p><span class="fa fa-eye text-dark"></span> {{planeta.contador}}</p>
+              </div>
+              <div class="col-12 col-md-5">
+                <a (click)="false" *ngIf="sendFromId == 0" (click)="selectSendMessageFrom(planeta.id)"
+                  class="btn btn-primary rounded-circle"><span class="fa fa-comments"></span></a>
+                <a (click)="false" *ngIf="sendFromId != 0 && sendFromId != planeta.id"
+                  (click)="selectSendMessageTo(messageMD, planeta.id)" class="btn btn-success rounded-circle"><span
+                    class="fa fa-paper-plane"></span></a>
+              </div>
+              <div class="col-12 col-md-2">
+                <button type="button" title="Detalles" class="btn btn-dark rounded-circle"
+                  (click)="open(detalles, planeta)"><span class="fa fa-info"></span></button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
+<ng-template #detalles let-modal>
+  <div class="modal-body">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">X</button>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <h3><span class="fa fa-users"></span> Habitantes</h3>
+        <table class="table table-stripped table-hover">
+          <thead>
+            <th>Nombre</th>
+            <th>Peso</th>
+            <th>Fecha de nacimiento</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let persona of planetaSelec.personas">
+              <td>{{persona.nombre}}</td>
+              <td>{{persona.peso}}</td>
+              <td>{{persona.fechaNacimiento}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12 col-md-6">
+        <h3><span class="fa fa-list"></span> Detalles</h3>
+        <table class="table">
+          <tr>
+            <td>
+              <p><span class="fa fa-clock"></span> Periodo de rotación: {{planetaSelec.periodoDeRotacion}}</p>
+            </td>
+            <td>
+              <p><span class="fa fa-ruler-vertical"></span> Diámetro: {{planetaSelec.diametro}}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p><span class="fa fa-cloud-sun"></span> Clima: {{planetaSelec.clima}}</p>
+            </td>
+            <td>
+              <p><span class="fa fa-mountain"></span> Terreno: {{planetaSelec.terreno}}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p><span class="fa fa-globe-americas"></span> Nombre: {{planetaSelec.nombre}}</p>
+            </td>
+            <td>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-12 col-md-6">
+        <h3><span class="fa fa-comments"></span> Mensajes recibidos <small class="badge badge-danger">{{messages.length}}</small></h3>
+        <h3 class="text-muted text-center" *ngIf="messages.length == 0">¡No tienes mensajes!</h3>
+        <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+          <ngb-panel *ngFor="let messageI of messages">
+            <ng-template ngbPanelHeader>
+              <div class="d-flex align-items-center justify-content-between">
+                <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">De: {{messageI.messageSendFrom}}</button>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              {{messageI.message}}
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #messageMD let-modal>
+  <div class="modal-body">
+    <button type="button" class="close" (click)="modal.close()"><i class="fa fa-times-circle text-danger"></i></button>
+    <h3 class="text-primary"><span class="fa fa-paper-plane"></span> Enviar mensaje</h3>
+    <div class="row mt-5">
+      <div class="col-12">
+        <textarea name="message" [formControl]="message"
+          [ngClass]="{'is-invalid': message.invalid, 'is-valid': message.valid}" placeholder="Mensaje..." id="message"
+          class="form-control" cols="30" rows="5"></textarea>
+        <p class="text-danger" *ngIf="message.hasError('required')">*Ingresa un mensaje!</p>
+        <p class="text-danger" *ngIf="message.hasError('maxlength')">*Ingresa un mensaje con maximo 100 caracteres!</p>
+        <button type="button" [disabled]="message.invalid" (click)="sendMessage()"
+          class="btn btn-outline-success btn-block mt-3"><span class="fa fa-paper-plane"></span></button>
+      </div>
+    </div>
+  </div>
+</ng-template>
